@@ -12,9 +12,10 @@ var scene,
     light,
     renderer,
 		container,
- circle,
- skelet,
-  particle;
+    circle,
+    skelet,
+    particle;
+
 //SCENE
 
 //SCREEN VARIABLES
@@ -144,14 +145,14 @@ function handleTouchMove(event) {
 }
 
 function createLights() {
-  light = new THREE.HemisphereLight(0xffffff, 0xffffff, .5)
+  light = new THREE.HemisphereLight(0x482B82, 0x482B82, .5)
 
-  shadowLight = new THREE.DirectionalLight(0xffffff, .8);
+  shadowLight = new THREE.DirectionalLight(0x482B82, .8);
   shadowLight.position.set(200, 200, 200);
   shadowLight.castShadow = true;
   shadowLight.shadowDarkness = .2;
 
-  backLight = new THREE.DirectionalLight(0xffffff, .4);
+  backLight = new THREE.DirectionalLight(0x482B82, .4);
   backLight.position.set(-100, 200, 50);
   backLight.shadowDarkness = .2;
   backLight.castShadow = true;
@@ -172,13 +173,13 @@ scene.add( lights[2] );
   scene.add(shadowLight);
 }
 
-function createCows(){
-  cow = new Cow();
-  scene.add(cow.threegroup);
+function createPigs(){
+  pig = new Pig();
+  scene.add(pig.threegroup);
   var angx = 0;
-  var da = Math.PI*2 / 10;
+  var da = Math.PI*2 /20;
 
-  for (var i=0; i<10; i++){
+  for (var i=0; i<100; i++){
 
     var planet = new Planet();
     var d = 200 + Math.random()*400;
@@ -193,7 +194,7 @@ function createCows(){
 
 }
 
-Cow = function(){
+Pig = function(){
   this.threegroup = new THREE.Group();
   this.whiteMat = new THREE.MeshLambertMaterial ({
     color: 0xffffff,
@@ -309,10 +310,10 @@ Cow = function(){
   // EYES
 
   this.leftEye = new THREE.Mesh(spotGeom, this.whiteMat);
-  this.leftEye.scale.set(1,2.5,2.5);
+  this.leftEye.scale.set(1,1.5,2.5);
   this.leftEye.position.x = 41;
   this.leftEye.position.y = 26;
-  this.leftEye.position.z = 100;
+  this.leftEye.position.z = 120;
 
   this.rightEye = this.leftEye.clone();
   this.rightEye.position.x = -41;
@@ -323,7 +324,7 @@ Cow = function(){
   this.leftIris.scale.set(.5,.5,.5);
   this.leftIris.position.x = 50;
   this.leftIris.position.y = 26;
-  this.leftIris.position.z = 110;
+  this.leftIris.position.z = 140;
 
   this.rightIris = this.leftIris.clone();
   this.leftIris.position.x = -50;
@@ -429,16 +430,16 @@ Cow = function(){
   this.threegroup.add(this.rightHorn);
   this.threegroup.add(this.mouth);
   this.threegroup.add(this.lips);
-  this.threegroup.add(this.ring1);
-  this.threegroup.add(this.ring2);
-  this.threegroup.add(this.ring3);
-  this.threegroup.add(this.ring4);
+  //this.threegroup.add(this.ring1);
+  //this.threegroup.add(this.ring2);
+  //this.threegroup.add(this.ring3);
+//  this.threegroup.add(this.ring4);
   this.threegroup.add(this.leg1);
   this.threegroup.add(this.leg2);
   this.threegroup.add(this.leg3);
   this.threegroup.add(this.leg4);
   this.threegroup.add(this.udder);
-  this.threegroup.add(this.wire);
+  //this.threegroup.add(this.wire);
 
   this.threegroup.traverse( function ( object ) {
 		if ( object instanceof THREE.Mesh ) {
@@ -447,11 +448,11 @@ Cow = function(){
 		}
 	} );
 }
+
+var
+
 /*
 Cow.prototype.blink = function(){
-
-
-
   TweenMax.to(this.leftEye.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
 
   TweenMax.to(this.rightEye.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
@@ -462,36 +463,55 @@ Cow.prototype.blink = function(){
 */
 Planet = function (){
 
-  var colors = [0x000000, 0x6abc94, 0xee7351, 0xcd9b56,0xf8f8f8 ];
+  var colors = [0xFF94A3, 0x6abc94, 0xee7351, 0xcd9b56,0xf8f8f8 ];
   var col = colors[Math.floor(Math.random()*colors.length)];
   this.threegroup = new THREE.Group();
   this.blackMat = new THREE.MeshLambertMaterial ({
     color: col,
     shading:THREE.FlatShading
   });
-  this.wireMat = new THREE.LineBasicMaterial ({
-    color:0x000000,
-    linewidth:.3,
-    fog : true
-  });
+  //this.wireMat = new THREE.LineBasicMaterial ({
+  //  color:0xFF94A3,
+    //linewidth:.3,
+    //fog : true
+  //});
 
-  var wireGeom = new THREE.Geometry();
-  wireGeom.vertices.push(
-    new THREE.Vector3( 0, 0, 0 ),
-    new THREE.Vector3( 0, 2000, 0 )
-  );
-  var s = 20 + Math.random()*20
-  var geom = new THREE.BoxGeometry(s,s,s);
+  //var wireGeom = new THREE.Geometry();
+  //wireGeom.vertices.push(
+    //new THREE.Vector3( 0, 0, 0 ),
+    //new THREE.Vector3( 0, 1000, 0 )
+  //);
+  var s = 60 + Math.random()*60
+
+  var geom = new THREE.TorusGeometry( 10, 3, 16, 100 )
 
   // WIRE
-  this.wire = new THREE.Line(wireGeom, this.wireMat);
+  //this.wire = new THREE.Line(wireGeom, this.wireMat);
 
   this.core = new THREE.Mesh(geom, this.blackMat);
   this.threegroup.add(this.core);
-  this.threegroup.add(this.wire);
+  //this.threegroup.add(this.wire);
 }
 
-var angleLegs = 0;
+var angleLegs = 3;
+
+function addFloor() {
+    var geometry = new THREE.PlaneGeometry(400, 400);
+    var material = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      shading: THREE.FlatShading
+    });
+
+    this.floor = new THREE.Mesh(geometry, material);
+    this.floor.name = 'floor';
+    this.floor.position.y = -130;
+    this.floor.rotateX(-Math.PI / 2);
+    this.floor.receiveShadow = true;
+
+    this.scene.add(this.floor);
+  }
+
+
 
 
 
@@ -502,27 +522,27 @@ function loop(){
   var cos = Math.cos(angleLegs);
 
   render();
-  cow.threegroup.rotation.y +=0.01;
+  pig.threegroup.rotation.y +=0.01;
 
-  cow.ring1.rotation.z += .005;
-  cow.ring2.rotation.z -= .005;
-  cow.ring3.rotation.z += .01;
-  cow.ring4.rotation.z += .1;
+  pig.ring1.rotation.z += .005;
+  pig.ring2.rotation.z -= .005;
+  pig.ring3.rotation.z += .01;
+  pig.ring4.rotation.z += .1;
 
 
-  cow.leg1.position.z = -40 + cos*10;
-  cow.leg2.position.z = -40 + sin*10;
-  cow.leg3.position.z = 40 + sin*10;
-  cow.leg4.position.z = 40 + cos*10;
-  cow.threegroup.position.y = cos*10;
+  pig.leg1.position.z = -40 + cos*10;
+  pig.leg2.position.z = -40 + sin*10;
+  pig.leg3.position.z = 40 + sin*10;
+  pig.leg4.position.z = 40 + cos*10;
+  pig.threegroup.position.y = cos*10;
 
-  cow.leftEar.position.y = cow.rightEar.position.y = 35 + Math.sin(angleLegs)*5;
-  cow.mouth.position.y = -40 + sin*5;
-  cow.mouth.scale.set(1, .5 + Math.abs(cos)*.5, 1);
-  cow.lips.position.y = -50 + sin*5;
-  cow.tail.rotation.x = sin*Math.PI/3;
-  cow.udder.position.y = -55 + sin*10;
-  cow.ring4.position.y = 80 + sin*10;
+  pig.leftEar.position.y = pig.rightEar.position.y = 35 + Math.sin(angleLegs)*5;
+  pig.mouth.position.y = -40 + sin*5;
+  pig.mouth.scale.set(1, .5 + Math.abs(cos)*.5, 1);
+  pig.lips.position.y = -50 + sin*5;
+  pig.tail.rotation.x = sin*Math.PI/3;
+  pig.udder.position.y = -55 + sin*10;
+  pig.ring4.position.y = 80 + sin*10;
 
 
   particle.rotation.x += 0.0000;
@@ -531,6 +551,8 @@ function loop(){
   circle.rotation.y -= 0.0030;
   skelet.rotation.x -= 0.0010;
   skelet.rotation.y += 0.0020;
+
+
   requestAnimationFrame(loop);
   }
 
@@ -543,5 +565,6 @@ function render(){
 
 init();
 createLights();
-createCows();
+createPigs();
+addFloor();
 loop();
