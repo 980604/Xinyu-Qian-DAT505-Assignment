@@ -105,6 +105,7 @@ document.addEventListener('mouseup', handleMouseUp, false);
 }
 //configer the camera size
 function onWindowResize() {
+  // update height and width of the renderer and the camera
   HEIGHT = window.innerHeight;
   WIDTH = window.innerWidth;
   windowHalfX = WIDTH / 2;
@@ -149,18 +150,22 @@ function handleTouchMove(event) {
 
 //configer light
 function createLights() {
+  // A hemisphere light is a gradient colored light;
   light = new THREE.HemisphereLight(0x482B82, 0x482B82, .5)
-
+// Set the direction of the light
   shadowLight = new THREE.DirectionalLight(0x482B82, .8);
   shadowLight.position.set(200, 200, 200);
   shadowLight.castShadow = true;
   shadowLight.shadowDarkness = .2;
-
+// Set the back direction of the light
   backLight = new THREE.DirectionalLight(0x482B82, .4);
   backLight.position.set(-100, 200, 50);
   backLight.shadowDarkness = .2;
   backLight.castShadow = true;
+  // A directional light shines from a specific direction.
   var lights = [];
+
+  //create a array light
 lights[0] = new THREE.DirectionalLight( 0xffffff, 1 );
 lights[0].position.set( 1, 0, 0 );
 lights[1] = new THREE.DirectionalLight( 0x11E8BB, 1 );
@@ -259,7 +264,7 @@ Pig = function(){
 
 
 
-//configer the geometries
+//configer the meshed
   var bodyGeom = new THREE.BoxGeometry(100, 100, 100);
   var spotGeom = new THREE.BoxGeometry(20,20, 20);
   var spotGeom2 = new THREE.BoxGeometry(10,10, 10);
@@ -288,7 +293,8 @@ var cmouthGeom = new THREE.BoxGeometry(60, 70,60);
 
 //build the pig
   this.body = new THREE.Mesh(bodyGeom, this.pinkMat);
-
+  // To create an object in Three.js, we have to create a mesh
+  	// which is a combination of a geometry and some material
   // SPOTS
 
   this.spot1 = new THREE.Mesh(spotGeom, this.whiteMat);
@@ -666,6 +672,7 @@ Planet = function (){
   });
 
   var s = 60 + Math.random()*60
+//core
   var geom = new THREE.TorusGeometry( 10, 3, 16, 100 )
   this.core = new THREE.Mesh(geom, this.blackMat);
   this.threegroup.add(this.core);
@@ -677,6 +684,7 @@ var angleLegs = 3;
 	// and render the scene on each frames
 function loop(){
   angleLegs += .2;
+//random angle
   var sin = Math.sin(angleLegs);
   var cos = Math.cos(angleLegs);
 
