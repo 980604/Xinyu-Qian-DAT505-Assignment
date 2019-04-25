@@ -15,10 +15,7 @@ var scene,
     circle,
     skelet,
     particle;
-    var  objects=[];
-    var raycaster= new THREE.Raycaster();
-    var mouse = new THREE.Vector2(),
-            INTERSECTED, SELECTED;
+  
 var speed=1;
 
 
