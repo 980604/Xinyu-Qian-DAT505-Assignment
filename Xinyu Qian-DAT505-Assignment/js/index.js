@@ -15,6 +15,14 @@ var scene,
     circle,
     skelet,
     particle;
+    var  objects=[];
+    var raycaster= new THREE.Raycaster();
+    var mouse = new THREE.Vector2(),
+            INTERSECTED, SELECTED;
+var speed=1;
+
+
+
 
 //SCENE
 
@@ -55,12 +63,13 @@ renderer.setClearColor("#441B73");
 
   container = document.getElementById('world');
   container.appendChild(renderer.domElement);
+
   windowHalfX = WIDTH / 2;
   windowHalfY = HEIGHT / 2;
   window.addEventListener('resize', onWindowResize, false);
   document.addEventListener('mousemove', handleMouseMove, false);
   document.addEventListener('mousedown', handleMouseDown, false);
-  document.addEventListener('mouseup', handleMouseUp, false);
+document.addEventListener('mouseup', handleMouseUp, false);
   document.addEventListener('touchstart', handleTouchStart, false);
 	document.addEventListener('touchend', handleTouchEnd, false);
 	document.addEventListener('touchmove',handleTouchMove, false);
@@ -92,17 +101,10 @@ renderer.setClearColor("#441B73");
     particle.add(mesh);
   }
 
-  var mat = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    shading: THREE.FlatShading
-  });
 
-  var mat2 = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    wireframe: true,
-    side: THREE.DoubleSide
 
-  });
+
+
 }
 
 function onWindowResize() {
@@ -120,8 +122,9 @@ function handleMouseMove(event) {
 }
 
 function handleMouseDown(event) {
-  //
+
 }
+
 function handleMouseUp(event) {
   //
 }
@@ -143,6 +146,9 @@ function handleTouchMove(event) {
 		mousePos = {x:event.touches[0].pageX, y:event.touches[0].pageY};
   }
 }
+
+
+
 
 function createLights() {
   light = new THREE.HemisphereLight(0x482B82, 0x482B82, .5)
@@ -231,11 +237,30 @@ Pig = function(){
     shading:THREE.FlatShading
   });
 
+  this.brownMat = new THREE.MeshLambertMaterial ({
+    color: 0xE1AF6D,
+    shading:THREE.FlatShading
+  });
+
+  this.darkbrownMat = new THREE.MeshLambertMaterial ({
+    color: 0x885D40,
+    shading:THREE.FlatShading
+  });
+
+  this.ddarkbrownMat = new THREE.MeshLambertMaterial ({
+    color: 0xFCD253,
+    shading:THREE.FlatShading
+  });
+
+
   this.wireMat = new THREE.LineBasicMaterial ({
     color:0xffffff,
     linewidth:1,
     fog : true
   });
+
+
+
 
   var bodyGeom = new THREE.BoxGeometry(100, 100, 100);
   var spotGeom = new THREE.BoxGeometry(20,20, 20);
@@ -246,6 +271,17 @@ Pig = function(){
   var faceGeom  = new THREE.BoxGeometry(100,100, 100);
   var ringGeom = new THREE.TorusGeometry(200, 3, 4, 4);
   var ringGeom2 = new THREE.TorusGeometry(50, 3, 4, 4);
+  var playGeom = new THREE.BoxGeometry(800, 50, 50);
+    var playGeom2 = new THREE.BoxGeometry(200, 20, 200);
+  var mhandGeom = new THREE.BoxGeometry(150, 450, 150);
+  var lbodyGeom = new THREE.BoxGeometry(150, 150, 280);
+  var rearGeom = new THREE.BoxGeometry(25, 15, 25);
+var armGeom = new THREE.BoxGeometry(25, 50, 25);
+var hornGeom = new THREE.BoxGeometry(15, 35, 15);
+var mouthGeom = new THREE.BoxGeometry(35, 15, 35);
+var cmouthGeom = new THREE.BoxGeometry(60, 70, 60);
+
+var wireGeom1 = new THREE.BoxGeometry(2, 1000, 2);
 
   var wireGeom = new THREE.Geometry();
   wireGeom.vertices.push(
@@ -349,7 +385,7 @@ Pig = function(){
 
   // MOUTH
   this.mouth = new THREE.Mesh(spotGeom, this.blackMat);
-  this.mouth.scale.set(1,1,1);
+  this.mouth.scale.set(.5,.5,.5);
   this.mouth.position.y = -40;
   this.mouth.position.z = 141;
 
@@ -361,25 +397,25 @@ Pig = function(){
 
   // RINGS
   this.ring1 = new THREE.Mesh(ringGeom, this.yellowMat);
-  this.ring1.position.y = 0;
+  this.ring1.position.y = 600;
   this.ring1.position.z = 0;
   this.ring1.rotation.x = -Math.PI/4;
 
   this.ring2 = new THREE.Mesh(ringGeom, this.orangeMat);
   this.ring2.scale.set(1.3,1.3,1.3);
-  this.ring2.position.y = 0;
+  this.ring2.position.y = 600;
   this.ring2.position.z = 25;
-  this.ring2.rotation.x = -Math.PI/4;
+  this.ring2.rotation.x = -Math.PI;
 
   this.ring3 = new THREE.Mesh(ringGeom, this.greenMat);
-  this.ring3.position.y = 0;
+  this.ring3.position.y = 600;
   this.ring3.position.z = 50;
-  this.ring3.rotation.x = -Math.PI/4;
+  this.ring3.rotation.x = -Math.PI;
 
   this.ring4 = new THREE.Mesh(ringGeom2, this.yellowMat);
-  this.ring4.position.y = 80;
-  this.ring4.position.z = 100;
-  this.ring4.rotation.x = -Math.PI/2;
+  this.ring4.position.y = 500;
+  this.ring4.position.z = 50;
+  this.ring4.rotation.x = -Math.PI;
 
   // LEGS
 
@@ -402,11 +438,132 @@ Pig = function(){
   this.udder.scale.set(2,1,2);
   this.udder.position.y = -55;
   this.udder.position.z = -10;
-/*
+
+
+  this.play = new THREE.Mesh(playGeom, this.greenMat);
+  this.play.position.y = -110;
+  this.play.position.z = 40;
+  this.play.rotation.x = -Math.PI;
+
+  //handmonkey
+  this.leftHand = new THREE.Mesh(mhandGeom, this.brownMat);
+  this.leftHand.scale.set(.5,.5,.5);
+  this.leftHand.position.y = -300;
+  this.leftHand.position.z = 60;
+
+  this.lbody = new THREE.Mesh(lbodyGeom, this.brownMat);
+  this.lbody.scale.set(.5,.5,.5);
+  this.lbody.position.y = -400;
+  this.lbody.position.z = 30;
+
+  this.rleftEar = new THREE.Mesh(rearGeom, this.brownMat);
+  this.rleftEar.position.x = 100;
+  this.rleftEar.position.y = -80;
+  this.rleftEar.position.z = 60;
+
+  this.rightFinger = this.rleftEar.clone();
+  this.rightFinger.position.x = -100;
+//
+  this.rleftArm = new THREE.Mesh(armGeom, this.greenMat);
+  this.rleftArm.position.x = 100;
+  this.rleftArm.position.y = -230;
+  this.rleftArm.position.z = 40;
+
+  this.rightArm = this.rleftArm.clone();
+  this.rightArm.position.x = -100;
+
+  // EYES
+
+  this.rleftEye = new THREE.Mesh(spotGeom, this.whiteMat);
+  this.rleftEye.scale.set(1,2.5,1.5);
+  this.rleftEye.position.x = 30;
+  this.rleftEye.position.y = -216;
+  this.rleftEye.position.z = 70;
+
+  this.lrightEye = this.rleftEye.clone();
+  this.lrightEye.position.x = -30;
+
+  // IRIS
+
+  this.rleftIris = new THREE.Mesh(spotGeom, this.blackMat);
+  this.rleftIris.scale.set(.5,.5,.5);
+  this.rleftIris.position.x = 41;
+  this.rleftIris.position.y = -219;
+  this.rleftIris.position.z = 80;
+
+  this.lrightIris = this.rleftIris.clone();
+  this.lrightIris.position.x = -41;
+//
+  this.lefteyelid = new THREE.Mesh(spotGeom, this.darkbrownMat);
+
+  this.lefteyelid.position.x = 40;
+  this.lefteyelid.position.y = -206;
+  this.lefteyelid.position.z = 80;
+
+  this.righteyelid = this.lefteyelid.clone();
+  this.righteyelid.position.x = -40;
+//
+this.amouth = new THREE.Mesh(mouthGeom, this.darkbrownMat);
+
+this.amouth.position.y = -250;
+this.amouth.position.z = 113;
+
+  this.bmouth= this.amouth.clone();
+  this.amouth.position.y = -270;
+
+ this.cmouth = new THREE.Mesh(cmouthGeom, this.ddarkbrownMat);
+ this.cmouth.position.y = -255;
+ this.cmouth.position.z = 86;
+//
+
+this.Ear = new THREE.Mesh(spotGeom2, this.brownMat);
+
+this.Ear.position.x = 31;
+this.Ear.position.y = -216;
+this.Ear.position.z = 70;
+
+//this.lrightEye = this.rleftEye.clone();
+//this.lrightEye.position.x = -31;
+//
+
+this.lefthorn = new THREE.Mesh(hornGeom, this.darkbrownMat);
+
+this.lefthorn.position.x = 25;
+this.lefthorn.position.y = -176;
+this.lefthorn.position.z = 80;
+
+this.righthorn = this.lefthorn.clone();
+this.righthorn.position.x = -25;
+//
+this.aleg1 = new THREE.Mesh(armGeom, this.darkbrownMat);
+this.aleg1.position.x = -30;
+this.aleg1.position.y = -450;
+this.aleg1.position.z = -40;
+
+this.aleg2 = this.aleg1.clone();
+this.aleg2.position.x = 30;
+
+this.aleg3 = this.aleg1.clone();
+this.aleg3.position.z = 40;
+
+this.aleg4 = this.aleg3.clone();
+this.aleg4.position.x = 30;
+
   // WIRE
   this.wire = new THREE.Line(wireGeom, this.wireMat);
   this.wire.position.z = 50;
-*/
+
+  this.wire1 = new THREE.Mesh(wireGeom1, this.wireMat);
+  this.wire1.position.x = 100;
+  this.wire1.position.z = 40;
+  this.wire2 = this.wire1.clone();
+  this.wire2.position.x = -100;
+
+  this.play2 = new THREE.Mesh(playGeom2, this.greenMat);
+  this.play2.position.x = 0;
+  this.play2.position.y = -485;
+  this.play2.position.z = 40;
+
   this.threegroup.add(this.body);
   this.threegroup.add(this.spot1);
   this.threegroup.add(this.spot2);
@@ -432,13 +589,45 @@ Pig = function(){
   this.threegroup.add(this.lips);
   //this.threegroup.add(this.ring1);
   //this.threegroup.add(this.ring2);
-  //this.threegroup.add(this.ring3);
-//  this.threegroup.add(this.ring4);
+  this.threegroup.add(this.ring3);
+ this.threegroup.add(this.ring4);
   this.threegroup.add(this.leg1);
   this.threegroup.add(this.leg2);
   this.threegroup.add(this.leg3);
   this.threegroup.add(this.leg4);
   this.threegroup.add(this.udder);
+  this.threegroup.add(this.wire);
+  this.threegroup.add(this.wire1);
+  this.threegroup.add(this.wire2);
+  this.threegroup.add(this.play);
+
+  this.threegroup.add(this.leftHand);
+    this.threegroup.add(this.lbody);
+  this.threegroup.add(this.rleftEar);
+  this.threegroup.add(this.rightFinger);
+  this.threegroup.add(this.rleftArm);
+  this.threegroup.add(this.rightArm);
+  this.threegroup.add(this.rleftEye);
+  this.threegroup.add(this.lrightEye);
+  this.threegroup.add(this.rleftIris);
+  this.threegroup.add(this.lrightIris);
+  this.threegroup.add(this.lefteyelid);
+  this.threegroup.add(this.righteyelid);
+  this.threegroup.add(this.lefthorn);
+  this.threegroup.add(this.righthorn);
+  this.threegroup.add(this.amouth);
+  this.threegroup.add(this.bmouth);
+  this.threegroup.add(this.cmouth);
+  this.threegroup.add(this.aleg1);
+  this.threegroup.add(this.aleg2);
+  this.threegroup.add(this.aleg3);
+  this.threegroup.add(this.aleg4);
+  this.threegroup.add(this.Ear);
+this.threegroup.add(this.play2);
+
+
+
+
   //this.threegroup.add(this.wire);
 
   this.threegroup.traverse( function ( object ) {
@@ -449,18 +638,22 @@ Pig = function(){
 	} );
 }
 
-var
 
-/*
-Cow.prototype.blink = function(){
+
+
+Pig.prototype.blink = function(){
   TweenMax.to(this.leftEye.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
 
   TweenMax.to(this.rightEye.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
 
   TweenMax.to(this.leftIris.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
   TweenMax.to(this.rightIris.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
+  TweenMax.to(this.lbody.rotation, speed*1.3, {
+    x: 0,
+    ease: Back.easeOut
+  });
 }
-*/
+
 Planet = function (){
 
   var colors = [0xFF94A3, 0x6abc94, 0xee7351, 0xcd9b56,0xf8f8f8 ];
@@ -470,11 +663,11 @@ Planet = function (){
     color: col,
     shading:THREE.FlatShading
   });
-  //this.wireMat = new THREE.LineBasicMaterial ({
-  //  color:0xFF94A3,
-    //linewidth:.3,
-    //fog : true
-  //});
+  this.wireMat = new THREE.LineBasicMaterial ({
+   color:0xFF94A3,
+    linewidth:.3,
+    fog : true
+  });
 
   //var wireGeom = new THREE.Geometry();
   //wireGeom.vertices.push(
@@ -495,24 +688,6 @@ Planet = function (){
 
 var angleLegs = 3;
 
-function addFloor() {
-    var geometry = new THREE.PlaneGeometry(400, 400);
-    var material = new THREE.MeshPhongMaterial({
-      color: 0xffffff,
-      shading: THREE.FlatShading
-    });
-
-    this.floor = new THREE.Mesh(geometry, material);
-    this.floor.name = 'floor';
-    this.floor.position.y = -130;
-    this.floor.rotateX(-Math.PI / 2);
-    this.floor.receiveShadow = true;
-
-    this.scene.add(this.floor);
-  }
-
-
-
 
 
 
@@ -522,11 +697,14 @@ function loop(){
   var cos = Math.cos(angleLegs);
 
   render();
+
+
+
   pig.threegroup.rotation.y +=0.01;
 
   pig.ring1.rotation.z += .005;
-  pig.ring2.rotation.z -= .005;
-  pig.ring3.rotation.z += .01;
+//  pig.ring2.rotation.z -= .005;
+//  pig.ring3.rotation.z += .01;
   pig.ring4.rotation.z += .1;
 
 
@@ -544,13 +722,18 @@ function loop(){
   pig.udder.position.y = -55 + sin*10;
   pig.ring4.position.y = 80 + sin*10;
 
+  pig.aleg1.position.z = -20 + cos*10;
+  pig.aleg2.position.z = -20 + sin*10;
+  pig.aleg3.position.z = 20 + sin*10;
+  pig.aleg4.position.z = 20 + cos*10;
+
 
   particle.rotation.x += 0.0000;
   particle.rotation.y -= 0.0040;
-  circle.rotation.x -= 0.0020;
-  circle.rotation.y -= 0.0030;
-  skelet.rotation.x -= 0.0010;
-  skelet.rotation.y += 0.0020;
+  circle.rotation.x -= 0.0050;
+  circle.rotation.y -= 0.0060;
+  skelet.rotation.x -= 0.0040;
+  skelet.rotation.y += 0.0050;
 
 
   requestAnimationFrame(loop);
@@ -559,6 +742,7 @@ function loop(){
 
 function render(){
   if (controls) controls.update();
+
   renderer.render(scene, camera);
 }
 
@@ -566,5 +750,9 @@ function render(){
 init();
 createLights();
 createPigs();
-addFloor();
+pig.blink();
+blinkInterval = setInterval(function(){
+  pig.blink();
+}, 4000);
+
 loop();

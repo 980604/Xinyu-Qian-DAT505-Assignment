@@ -1,6 +1,12 @@
 body {
   background-color: #a3d5d3;
 }
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
 /*
 #world {
   background: #8057AE;
