@@ -1,4 +1,4 @@
-//THREEJS RELATED VARIABLES
+
 
 var scene,
     camera,
@@ -15,15 +15,8 @@ var scene,
     circle,
     skelet,
     particle;
-  
+
 var speed=1;
-
-
-
-
-//SCENE
-
-//SCREEN VARIABLES
 
 var HEIGHT,
   	WIDTH,
@@ -32,37 +25,48 @@ var HEIGHT,
     mousePos = {x:0,y:0};
 
 //INIT THREE JS, SCREEN AND MOUSE EVENTS
-
+//create the scene
 function init(){
+  // Create an empty scene
   scene = new THREE.Scene();
-
-
+  //configer size,value
+  // Get the width and the height of the screen,
+	// use them to set up the aspect ratio of the camera
+	// and the size of the renderer.
   HEIGHT = window.innerHeight;
   WIDTH = window.innerWidth;
   aspectRatio = WIDTH / HEIGHT;
   fieldOfView = 60;
   nearPlane = 1;
   farPlane = 2000;
-
+// Create a basic perspective camera,define the position
   camera = new THREE.PerspectiveCamera(
     fieldOfView,
     aspectRatio,
     nearPlane,
     farPlane);
+    // Set the position of the camera
   camera.position.z = 800;
   camera.position.y = 300;
   camera.lookAt(new THREE.Vector3(0,0,0));
-
+// Configure renderer size
+// Allow transparency to show the gradient background
+		// we defined in the CSS
+    // Activate the anti-aliasing; this is less performant,
+		// but, as our project is low-poly based, it should be fine
   renderer = new THREE.WebGLRenderer({alpha: true, antialias: true });
   renderer.setSize(WIDTH, HEIGHT);
   renderer.shadowMapEnabled = true;
+  //Configure renderer clear color
 renderer.setClearColor("#441B73");
-
+//Append container to DOM
   container = document.getElementById('world');
   container.appendChild(renderer.domElement);
-
+// configer mouseevent
   windowHalfX = WIDTH / 2;
   windowHalfY = HEIGHT / 2;
+  // Listen to the screen: if the user resizes it
+	// we have to update the camera and the renderer size
   window.addEventListener('resize', onWindowResize, false);
   document.addEventListener('mousemove', handleMouseMove, false);
   document.addEventListener('mousedown', handleMouseDown, false);
@@ -70,17 +74,17 @@ document.addEventListener('mouseup', handleMouseUp, false);
   document.addEventListener('touchstart', handleTouchStart, false);
 	document.addEventListener('touchend', handleTouchEnd, false);
 	document.addEventListener('touchmove',handleTouchMove, false);
-  //*
+  //control scene move with mouse
   controls = new THREE.OrbitControls( camera, renderer.domElement);
-  //*/
+  //configer three objects which float in the background
   circle = new THREE.Object3D();
   skelet = new THREE.Object3D();
   particle = new THREE.Object3D();
-
+//add objects
   scene.add(circle);
   scene.add(skelet);
   scene.add(particle);
-
+//create meshes with different material
   var geometry = new THREE.TetrahedronGeometry(2, 0);
   var geom = new THREE.IcosahedronGeometry(7, 1);
   var geom2 = new THREE.IcosahedronGeometry(15, 1);
@@ -89,7 +93,7 @@ document.addEventListener('mouseup', handleMouseUp, false);
     color: 0xffffff,
     shading: THREE.FlatShading
   });
-
+//make meshes float in random position
   for (var i = 0; i < 1000; i++) {
     var mesh = new THREE.Mesh(geometry, material);
     mesh.position.set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).normalize();
@@ -98,12 +102,8 @@ document.addEventListener('mouseup', handleMouseUp, false);
     particle.add(mesh);
   }
 
-
-
-
-
 }
-
+//configer the camera size
 function onWindowResize() {
   HEIGHT = window.innerHeight;
   WIDTH = window.innerWidth;
@@ -125,8 +125,9 @@ function handleMouseDown(event) {
 function handleMouseUp(event) {
   //
 }
-
+//make the touch start event
 function handleTouchStart(event) {
+  //if there is over a object , the event will run
   if (event.touches.length > 1) {
     event.preventDefault();
 		mousePos = {x:event.touches[0].pageX, y:event.touches[0].pageY};
@@ -136,7 +137,7 @@ function handleTouchStart(event) {
 function handleTouchEnd(event) {
     mousePos = {x:windowHalfX, y:windowHalfY};
 }
-
+// make the touch move event
 function handleTouchMove(event) {
   if (event.touches.length == 1) {
     event.preventDefault();
@@ -146,7 +147,7 @@ function handleTouchMove(event) {
 
 
 
-
+//configer light
 function createLights() {
   light = new THREE.HemisphereLight(0x482B82, 0x482B82, .5)
 
@@ -169,21 +170,19 @@ lights[2].position.set( -0.75, -1, 0.5 );
 scene.add( lights[0] );
 scene.add( lights[1] );
 scene.add( lights[2] );
-
-
   scene.add(backLight);
   scene.add(light);
   scene.add(shadowLight);
 }
-
+//create pigs make a group of pig
 function createPigs(){
   pig = new Pig();
   scene.add(pig.threegroup);
+  //configer the  planet, position  number
   var angx = 0;
   var da = Math.PI*2 /20;
 
   for (var i=0; i<100; i++){
-
     var planet = new Planet();
     var d = 200 + Math.random()*400;
     angx += da;
@@ -196,8 +195,10 @@ function createPigs(){
 
 
 }
+// creat the pig and alpaca
 
 Pig = function(){
+  //configer the material
   this.threegroup = new THREE.Group();
   this.whiteMat = new THREE.MeshLambertMaterial ({
     color: 0xffffff,
@@ -258,7 +259,7 @@ Pig = function(){
 
 
 
-
+//configer the geometries
   var bodyGeom = new THREE.BoxGeometry(100, 100, 100);
   var spotGeom = new THREE.BoxGeometry(20,20, 20);
   var spotGeom2 = new THREE.BoxGeometry(10,10, 10);
@@ -276,9 +277,8 @@ Pig = function(){
 var armGeom = new THREE.BoxGeometry(25, 50, 25);
 var hornGeom = new THREE.BoxGeometry(15, 35, 15);
 var mouthGeom = new THREE.BoxGeometry(35, 15, 35);
-var cmouthGeom = new THREE.BoxGeometry(60, 70, 60);
-
-var wireGeom1 = new THREE.BoxGeometry(2, 1000, 2);
+var cmouthGeom = new THREE.BoxGeometry(60, 70,60);
+ var wireGeom1 = new THREE.BoxGeometry(2, 1000, 2);
 
   var wireGeom = new THREE.Geometry();
   wireGeom.vertices.push(
@@ -286,7 +286,7 @@ var wireGeom1 = new THREE.BoxGeometry(2, 1000, 2);
     new THREE.Vector3( 0, 2000, 0 )
   );
 
-
+//build the pig
   this.body = new THREE.Mesh(bodyGeom, this.pinkMat);
 
   // SPOTS
@@ -436,18 +436,18 @@ var wireGeom1 = new THREE.BoxGeometry(2, 1000, 2);
   this.udder.position.y = -55;
   this.udder.position.z = -10;
 
-
+// the playboard
   this.play = new THREE.Mesh(playGeom, this.greenMat);
   this.play.position.y = -110;
   this.play.position.z = 40;
   this.play.rotation.x = -Math.PI;
 
-  //handmonkey
+  //build the alpaca
   this.leftHand = new THREE.Mesh(mhandGeom, this.brownMat);
   this.leftHand.scale.set(.5,.5,.5);
   this.leftHand.position.y = -300;
   this.leftHand.position.z = 60;
-
+//body
   this.lbody = new THREE.Mesh(lbodyGeom, this.brownMat);
   this.lbody.scale.set(.5,.5,.5);
   this.lbody.position.y = -400;
@@ -490,7 +490,7 @@ var wireGeom1 = new THREE.BoxGeometry(2, 1000, 2);
 
   this.lrightIris = this.rleftIris.clone();
   this.lrightIris.position.x = -41;
-//
+//eyelid
   this.lefteyelid = new THREE.Mesh(spotGeom, this.darkbrownMat);
 
   this.lefteyelid.position.x = 40;
@@ -499,7 +499,7 @@ var wireGeom1 = new THREE.BoxGeometry(2, 1000, 2);
 
   this.righteyelid = this.lefteyelid.clone();
   this.righteyelid.position.x = -40;
-//
+//mouth
 this.amouth = new THREE.Mesh(mouthGeom, this.darkbrownMat);
 
 this.amouth.position.y = -250;
@@ -511,7 +511,7 @@ this.amouth.position.z = 113;
  this.cmouth = new THREE.Mesh(cmouthGeom, this.ddarkbrownMat);
  this.cmouth.position.y = -255;
  this.cmouth.position.z = 86;
-//
+//ear
 
 this.Ear = new THREE.Mesh(spotGeom2, this.brownMat);
 
@@ -519,9 +519,9 @@ this.Ear.position.x = 31;
 this.Ear.position.y = -216;
 this.Ear.position.z = 70;
 
-//this.lrightEye = this.rleftEye.clone();
-//this.lrightEye.position.x = -31;
-//
+this.lrightEye = this.rleftEye.clone();
+this.lrightEye.position.x = -31;
+//horn
 
 this.lefthorn = new THREE.Mesh(hornGeom, this.darkbrownMat);
 
@@ -531,7 +531,7 @@ this.lefthorn.position.z = 80;
 
 this.righthorn = this.lefthorn.clone();
 this.righthorn.position.x = -25;
-//
+//leg
 this.aleg1 = new THREE.Mesh(armGeom, this.darkbrownMat);
 this.aleg1.position.x = -30;
 this.aleg1.position.y = -450;
@@ -634,11 +634,9 @@ this.threegroup.add(this.play2);
 		}
 	} );
 }
-
-
-
-
+// make pig blink use Tweenax
 Pig.prototype.blink = function(){
+  // make eyes and iris open and close
   TweenMax.to(this.leftEye.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
 
   TweenMax.to(this.rightEye.scale, .3, {y:0, ease:Strong.easeInOut, yoyo:true, repeat:3});
@@ -650,11 +648,12 @@ Pig.prototype.blink = function(){
     ease: Back.easeOut
   });
 }
-
+//build planet
 Planet = function (){
-
+// make cones upadate in random color
   var colors = [0xFF94A3, 0x6abc94, 0xee7351, 0xcd9b56,0xf8f8f8 ];
   var col = colors[Math.floor(Math.random()*colors.length)];
+  //configer material
   this.threegroup = new THREE.Group();
   this.blackMat = new THREE.MeshLambertMaterial ({
     color: col,
@@ -666,45 +665,28 @@ Planet = function (){
     fog : true
   });
 
-  //var wireGeom = new THREE.Geometry();
-  //wireGeom.vertices.push(
-    //new THREE.Vector3( 0, 0, 0 ),
-    //new THREE.Vector3( 0, 1000, 0 )
-  //);
   var s = 60 + Math.random()*60
-
   var geom = new THREE.TorusGeometry( 10, 3, 16, 100 )
-
-  // WIRE
-  //this.wire = new THREE.Line(wireGeom, this.wireMat);
-
   this.core = new THREE.Mesh(geom, this.blackMat);
   this.threegroup.add(this.core);
-  //this.threegroup.add(this.wire);
+
 }
 
 var angleLegs = 3;
-
-
-
-
+// start a loop that will update the objects' positions
+	// and render the scene on each frames
 function loop(){
   angleLegs += .2;
   var sin = Math.sin(angleLegs);
   var cos = Math.cos(angleLegs);
 
   render();
-
-
-
+//make the whole objects rotate
   pig.threegroup.rotation.y +=0.01;
-
+// ring rotate
   pig.ring1.rotation.z += .005;
-//  pig.ring2.rotation.z -= .005;
-//  pig.ring3.rotation.z += .01;
   pig.ring4.rotation.z += .1;
-
-
+//leg rotate. pig
   pig.leg1.position.z = -40 + cos*10;
   pig.leg2.position.z = -40 + sin*10;
   pig.leg3.position.z = 40 + sin*10;
@@ -718,7 +700,7 @@ function loop(){
   pig.tail.rotation.x = sin*Math.PI/3;
   pig.udder.position.y = -55 + sin*10;
   pig.ring4.position.y = 80 + sin*10;
-
+// rotate .alpaca
   pig.aleg1.position.z = -20 + cos*10;
   pig.aleg2.position.z = -20 + sin*10;
   pig.aleg3.position.z = 20 + sin*10;
@@ -736,7 +718,7 @@ function loop(){
   requestAnimationFrame(loop);
   }
 
-
+// configer renderer
 function render(){
   if (controls) controls.update();
 
