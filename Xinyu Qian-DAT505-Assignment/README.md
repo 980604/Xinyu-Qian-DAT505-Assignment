@@ -33,7 +33,7 @@ I want to express the theme of childhood in this project. Many people undertake 
 
 The most difficult thing in this project is the design of geometries. I have did some sketches in the early stage and matched color. I have to use simple pattern to show characteristic.
 
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/animal.JPG)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/animal.jpg)
 
 Before starting to code the scene, I  define a color palette that will be used consistently throughout the project. For this project I choose the following colors:
 
@@ -46,17 +46,17 @@ Let me do it
 
 THE SECOND STEP: make the structure and add all the main functions we need to create are put into the init function:
 
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/1.JPG)
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/2.JPG)
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/camera.JPG)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/1.jpg)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/2.jpg)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/3.jpg)
 
 The lights will set the mood of the whole scene and must be determined carefully. At this step of the project, I will just try to make the lightning good enough to make the objects visible.
 
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/lights.JPG)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/lights.jpg)
 
 The mouse event
 
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/mouseevent.JPG)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/mouseevent.jpg)
 
 THE THIRLD STEP: create a pig and a alpaca and a swing.
  The scripts are too long, so I summarize what we need in order to create an object. We need to
@@ -70,8 +70,10 @@ The FORTH STEP: add animation
 The pig and alpaca blinks, raotates.
 The swing rotates.
 
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/blink.JPG)
-![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/animation.JPG)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/blink.jpg)
+![Image text](https://raw.githubusercontent.com/980604/Xinyu-Qian-DAT505-Assignment/master/Xinyu Qian-DAT505-Assignment/image/animation.jpg)
 
 THE FINAL STEP: add audio
 I just add in html, which is much easy and faster.
+
+I think It is a pity that I do not do something interactive.
